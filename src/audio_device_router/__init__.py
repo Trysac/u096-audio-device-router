@@ -1,21 +1,30 @@
-"""Policy layer that classifies audio devices, resolves capture and playback roles to devices with sticky choices, and reports hot-plug changes"""
+"""Policy layer that classifies audio devices, resolves roles to devices and reports changes."""
 
 from __future__ import annotations
 
-__all__ = ["__version__", "normalize"]
+import logging
+
+from ._classifier import ClassifierPatterns, DeviceTraits, classify
+from ._devices import AudioDevice, DeviceBackend, DeviceChanges, FakeBackend, diff_devices
+from ._errors import RouterError
+from ._routing import Route, RoutingPlan, resolve_routes
+
+logging.getLogger(__name__).addHandler(logging.NullHandler())
+
+__all__ = [
+    "AudioDevice",
+    "ClassifierPatterns",
+    "DeviceBackend",
+    "DeviceChanges",
+    "DeviceTraits",
+    "FakeBackend",
+    "Route",
+    "RouterError",
+    "RoutingPlan",
+    "__version__",
+    "classify",
+    "diff_devices",
+    "resolve_routes",
+]
 
 __version__ = "0.1.0"
-
-
-def normalize(value: str) -> str:
-    """Return ``value`` trimmed and lower-cased.
-
-    Placeholder API created by the template: replace it with the utility's real behavior.
-
-    Raises:
-        ValueError: if ``value`` is empty or only whitespace.
-    """
-    cleaned = value.strip()
-    if not cleaned:
-        raise ValueError("value must not be empty")
-    return cleaned.lower()
